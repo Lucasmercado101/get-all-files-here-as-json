@@ -1,7 +1,7 @@
 use chrono::Datelike;
 use clap::Parser;
 use serde_json::{json, Value};
-use std::{env::current_dir, fs, path::Path, thread::current};
+use std::{env::current_dir, fs, path::Path};
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -22,8 +22,6 @@ fn get_path_recursively(paths: fs::ReadDir) -> Value {
             root.as_array_mut()
                 .unwrap()
                 .push(json!({ path.as_ref().unwrap().file_name().to_str().unwrap(): [get_path_recursively(fs::read_dir(path.as_ref().unwrap().path()).unwrap())] }));
-
-            println!("{}", path.as_ref().unwrap().file_name().to_str().unwrap());
         } else {
             root.as_array_mut().unwrap().push(json!(path
                 .as_ref()
